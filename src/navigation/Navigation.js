@@ -40,14 +40,3 @@ const RootNavigator = ({ isAuth }) => {
         </Stack.Navigator>
     );
 }
-
-
-/*
-<NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Login" component={LoginScreen} />
-                <Stack.Screen name="Registration" component={RegistrationScreen} />
-                <Stack.Screen name="ShiftList" component={ShiftListScreen} />
-            </Stack.Navigator>
-        </NavigationContainer>
-*/

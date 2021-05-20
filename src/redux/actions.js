@@ -11,8 +11,7 @@ export const authStart = () => {
 
 // return userData to reducers
 export const authSuccess = (token, userId) => {
-
-    console.log(token)
+    //console.log(token)
     return {
         type: actionTypes.AUTH_SUCCESS,
         idToken: token,
@@ -61,6 +60,7 @@ export const auth = (email, password) => {
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {
+                console.log(err);
                 dispatch(authFail(err.response.data.error));
             })
     };
