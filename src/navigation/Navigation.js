@@ -5,7 +5,7 @@ import React from 'react';
 
 import LoginScreen from '../screens/LoginScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
-import ShiftList from '../screens/ShiftList';
+import ShiftListScreen from '../screens/ShiftListScreen';
 
 export default Navigation = () => {
 
@@ -15,7 +15,7 @@ export default Navigation = () => {
         <NavigationContainer>
              <Stack.Screen name="Login" component={LoginScreen} />
              <Stack.Screen name="Registration" component={RegistrationScreen} />
-             <Stack.Screen name="ShiftList" component={ShiftList} />
+             <Stack.Screen name="ShiftList" component={ShiftListScreen} />
         </NavigationContainer>
     );
 }
