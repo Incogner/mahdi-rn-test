@@ -24,11 +24,17 @@ const authSuccess = (state, action) => {
     });
 }
 
+// Assign error to state and finish loading state
 const authFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: false
     });
+}
+
+// Logout will remove data for user
+const authLogout = (state, action) => {
+    return updateObject(state, {token: null, userId: null});
 }
 
 // Switch for actionTypes

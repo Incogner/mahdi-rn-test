@@ -28,6 +28,15 @@ export const authFail = (error) => {
     };
 };
 
+export const logout = () => {
+    removeData('token');
+    removeData('expirationDate');
+    removeData('userId');
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    };
+};
+
 // Fetch userData from firebase
 export const auth = (email, password) => {
     return dispatch => {
@@ -54,6 +63,26 @@ export const auth = (email, password) => {
             .catch(err => {
                 dispatch(authFail(err.response.data.error));
             })
+    };
+};
+
+// app will check for userData inside AsyncStorage
+// if there is no data the app will launch logout
+export const authCheckState = () => {
+    return dispatch => {
+        const token = getData('token');
+        if(!token) {
+            dispatch(logout());
+        } else {
+            const expirationDate = new Date(getData('expirationDate'));
+            if(expirationDate <= new Date()) {
+                dispatch(logout());
+            } else {
+                const userId = getData('userId');
+                dispatch(authSuccess(token, userId));
+            }
+            
+        }
     };
 };
 
