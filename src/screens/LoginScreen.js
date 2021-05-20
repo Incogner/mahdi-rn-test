@@ -45,6 +45,7 @@ export default LoginScreen = () => {
                     color: 'black'
                 }]}
                 autoCapitalize="none"
+                onChangeText={(val) => inputChangedHandler(val, 'email')}
             />
             <TextInput
                 placeholder={data.controls.password.placeholder}
@@ -53,6 +54,7 @@ export default LoginScreen = () => {
                     color: 'black'
                 }]}
                 autoCapitalize="none"
+                onChangeText={(val) => inputChangedHandler(val, 'password')}
             />
             <TouchableOpacity>
                 <Text>Click Here</Text>
