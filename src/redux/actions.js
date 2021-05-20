@@ -1,12 +1,14 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
+// triggers the Auth process
 export const authStart = () => {
     return {
         type: actionTypes.AUTH_START
     };
 };
 
+// return userData to reducers
 export const authSuccess = (token, userId) => {
     
     console.log(token)
@@ -17,6 +19,7 @@ export const authSuccess = (token, userId) => {
     };
 };
 
+// Fetch userData from firebase
 export const auth = (email, password) => {
     return dispatch => {
         dispatch(authStart());

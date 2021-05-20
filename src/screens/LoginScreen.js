@@ -26,6 +26,7 @@ export default LoginScreen = () => {
         }
     }
 
+    // Initialize state for page elements
     const [data, setData] = useState(initialstate);
 
     // get the redux store states
@@ -33,6 +34,7 @@ export default LoginScreen = () => {
     const dispatch = useDispatch();
     const fetchAuth = (email, password) => dispatch(actions.auth(email, password));
 
+    // handler to assign input values to states while changed
     inputChangedHandler = (val, controlName) => {
         const updatedControls = updateObject(data.controls, {
             [controlName]: updateObject(data.controls[controlName], {
@@ -41,36 +43,46 @@ export default LoginScreen = () => {
         });
         setData({ controls: updatedControls });
     }
+
     // on click user data will be fetched from firebase auth endpoint
     loginHandler = () => {
         fetchAuth(data.controls.email.value, data.controls.password.value);
     }
 
+    // Pass either the loading status or sreen elements after loading data
+    let content = <Text>Loading...</Text>;
+    if (!loginState.loading) {
+        content = (
+            <>
+                <Text>Login Here</Text>
+                <TextInput
+                    placeholder={data.controls.email.placeholder}
+                    placeholderTextColor="#666666"
+                    style={[styles.textInput, {
+                        color: 'black'
+                    }]}
+                    autoCapitalize="none"
+                    onChangeText={(val) => inputChangedHandler(val, 'email')}
+                />
+                <TextInput
+                    placeholder={data.controls.password.placeholder}
+                    placeholderTextColor="#666666"
+                    style={[styles.textInput, {
+                        color: 'black'
+                    }]}
+                    autoCapitalize="none"
+                    onChangeText={(val) => inputChangedHandler(val, 'password')}
+                />
+                <TouchableOpacity
+                    onPress={() => { loginHandler() }}>
+                    <Text>Click Here</Text></TouchableOpacity>
+            </>
+        );
+    }
+
     return (
         <View style={styles.container}>
-            <Text>Login Here</Text>
-            <TextInput
-                placeholder={data.controls.email.placeholder}
-                placeholderTextColor="#666666"
-                style={[styles.textInput, {
-                    color: 'black'
-                }]}
-                autoCapitalize="none"
-                onChangeText={(val) => inputChangedHandler(val, 'email')}
-            />
-            <TextInput
-                placeholder={data.controls.password.placeholder}
-                placeholderTextColor="#666666"
-                style={[styles.textInput, {
-                    color: 'black'
-                }]}
-                autoCapitalize="none"
-                onChangeText={(val) => inputChangedHandler(val, 'password')}
-            />
-            <TouchableOpacity
-                onPress={() => loginHandler()}>
-                <Text>Click Here</Text>
-            </TouchableOpacity>
+            {content}
         </View>
     );
 }
