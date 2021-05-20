@@ -14,11 +14,10 @@ export default Navigation = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-            <Stack.Screen name="Login" component={LoginScreen} />
-             <Stack.Screen name="Registration" component={RegistrationScreen} />
-             <Stack.Screen name="ShiftList" component={ShiftListScreen} />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="ShiftList" component={ShiftListScreen} />
             </Stack.Navigator>
-        
         </NavigationContainer>
     );
 }

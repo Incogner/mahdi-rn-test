@@ -1,39 +1,50 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import updateObject from '../utility/utility';
+import { updateObject } from '../utility/utility';
+import * as actions from '../redux/actions';
 
 export default LoginScreen = () => {
     const initialstate = {
         controls: {
-          email: {
-            placeholder: 'Mail Address',
-            value: '',
-            validation: {
-              required: true,
-              isEmail: true
+            email: {
+                placeholder: 'Mail Address',
+                value: '',
+                validation: {
+                    required: true,
+                    isEmail: true
+                }
+            },
+            password: {
+                placeholder: 'Password',
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 6
+                }
             }
-          },
-          password: {
-            placeholder: 'Password',
-            value: '',
-            validation: {
-              required: true,
-              minLength: 6
-            }
-          }
         }
-      }
+    }
 
-      const [data, setData] = useState(initialstate);
+    const [data, setData] = useState(initialstate);
 
-      inputChangedHandler = (val, controlName) => {
+    // get the redux store states
+    const loginState = useSelector(state => state.reducer);
+    const dispatch = useDispatch();
+    const fetchAuth = (email, password) => dispatch(actions.auth(email, password));
+
+    inputChangedHandler = (val, controlName) => {
         const updatedControls = updateObject(data.controls, {
-          [controlName]: updateObject(data.controls[controlName], {
-            value: val
-          })
+            [controlName]: updateObject(data.controls[controlName], {
+                value: val
+            })
         });
         setData({ controls: updatedControls });
-      }
+    }
+    // on click user data will be fetched from firebase auth endpoint
+    loginHandler = () => {
+        fetchAuth(data.controls.email.value, data.controls.password.value);
+    }
 
     return (
         <View style={styles.container}>
@@ -56,7 +67,8 @@ export default LoginScreen = () => {
                 autoCapitalize="none"
                 onChangeText={(val) => inputChangedHandler(val, 'password')}
             />
-            <TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => loginHandler()}>
                 <Text>Click Here</Text>
             </TouchableOpacity>
         </View>
