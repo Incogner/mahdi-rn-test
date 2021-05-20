@@ -19,6 +19,14 @@ export const authSuccess = (token, userId) => {
     };
 };
 
+// will assign error state on auth fail
+export const authFail = (error) => {
+    return {
+        type: actionTypes.AUTH_FAIL,
+        error: error
+    };
+};
+
 // Fetch userData from firebase
 export const auth = (email, password) => {
     return dispatch => {
@@ -37,7 +45,7 @@ export const auth = (email, password) => {
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {
-                // Error Handling
+                dispatch(authFail(err.response.data.error));
             })
     };
 };
