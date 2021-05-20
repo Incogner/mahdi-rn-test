@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 // triggers the Auth process
@@ -10,7 +11,7 @@ export const authStart = () => {
 
 // return userData to reducers
 export const authSuccess = (token, userId) => {
-    
+
     console.log(token)
     return {
         type: actionTypes.AUTH_SUCCESS,
@@ -42,6 +43,12 @@ export const auth = (email, password) => {
 
         axios.post(url, authData)
             .then(response => {
+                // save login Data inside device using Async Storage
+                const expirationDate =new Date(new Date().getTime() + response.data.expiresIn * 1000).toDateString();
+                storeData('token', response.data.idToken);
+                storeData('expirationDate', expirationDate);
+                storeData('userId', response.data.localId);
+
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {
@@ -49,3 +56,31 @@ export const auth = (email, password) => {
             })
     };
 };
+
+
+// methods to save, retreive and remove data from AsyncStorage
+const storeData = async (key, value) => {
+    try {
+        await AsyncStorage.setItem('@' + key, value)
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
+const getData = async (key) => {
+    try {
+        const value = await AsyncStorage.getItem('@' + key)
+        if (value !== null) { return value; }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+const removeData = async (key) => {
+    try {
+        await AsyncStorage.removeItem('@' + key)
+    } catch (e) {
+        console.log(e);
+    }
+}
