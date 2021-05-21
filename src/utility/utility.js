@@ -5,7 +5,7 @@ export const updateObject = (oldObject, updatedProperties) => {
     };
 };
 
-export const checkValidity = (value, rules) => {
+export const checkValidity = (value, rules, password) => {
     let isValid = true;
     if (!rules) {
         return true;
@@ -17,6 +17,10 @@ export const checkValidity = (value, rules) => {
 
     if (rules.minLength) {
         isValid = value.length >= rules.minLength && isValid
+    }
+
+    if (rules.checkPassword) {
+        isValid = value === password && isValid
     }
 
     if (rules.isEmail) {

@@ -37,22 +37,28 @@ export const logout = () => {
 };
 
 // Fetch userData from firebase
-export const auth = (email, password) => {
+export const auth = (email, password, name = "", isRegistration = false) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
+            displayName: name,
             email: email,
             password: password,
             returnSecureToken: true
         };
         // FireBase endpoint for Signing
         // this URL must be saved as Environment Variable in real applications
+        // for signup different url is used
         let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCXPnqezuRdCQ2aw4qPmfatAzMRYIujF70';
+        if(isRegistration){
+            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCXPnqezuRdCQ2aw4qPmfatAzMRYIujF70';
+        }
 
         axios.post(url, authData)
             .then(response => {
                 // save login Data inside device using Async Storage
                 const expirationDate =new Date(new Date().getTime() + response.data.expiresIn * 1000).toDateString();
+                storeData('fullname', response.data.displayName);
                 storeData('token', response.data.idToken);
                 storeData('expirationDate', expirationDate);
                 storeData('userId', response.data.localId);
@@ -60,7 +66,7 @@ export const auth = (email, password) => {
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
             })
             .catch(err => {
-                console.log(err);
+                console.log("Server Error: ---->> "+err);
                 dispatch(authFail(err.response.data.error));
             })
     };
@@ -85,6 +91,13 @@ export const authCheckState = () => {
         }
     };
 };
+
+export const errorRemove = () => {
+    return {
+        type: actionTypes.AUTH_FAIL,
+        error: null
+    };
+}
 
 
 // methods to save, retreive and remove data from AsyncStorage

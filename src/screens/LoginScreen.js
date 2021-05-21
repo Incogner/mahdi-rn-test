@@ -59,6 +59,7 @@ export default LoginScreen = ({ navigation }) => {
     const loginState = useSelector(state => state.reducer);
     const dispatch = useDispatch();
     const fetchAuth = (email, password) => dispatch(actions.auth(email, password));
+    const removeError = () => dispatch(actions.errorRemove());
 
     // use react-native-paper material design library for text color and background
     const { colors } = useTheme();
@@ -109,6 +110,16 @@ export default LoginScreen = ({ navigation }) => {
         });
         setData({ controls: updatedControls });
     }
+
+    // Alert to show error from server
+    const showErrorAlert = (message) =>
+        Alert.alert(
+            "Error",
+            message,
+            [
+                { text: "OK", onPress: () => removeError() }
+            ]
+        );
 
     // UserName field
     const usernameView = (
@@ -267,14 +278,13 @@ export default LoginScreen = ({ navigation }) => {
                     >
                         <Text style={[styles.textSign, {
                             color: '#009387'
-                        }]}>Sign Up</Text>
+                        }]}>Register</Text>
                     </TouchableOpacity>
                 </View>
                 {/* Showing server errors fom firebase */}
                 {loginState.error ?
-                    <Animatable.View animation="fadeInUp" style={{ alignItems: 'center' }} duration={500}>
-                        <Text style={styles.serverErrorMsg}>Error: {loginState.error.message}</Text>
-                    </Animatable.View> :
+                    showErrorAlert(loginState.error.message)
+                    :
                     null}
             </Animatable.View>
         </View>
