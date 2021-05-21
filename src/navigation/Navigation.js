@@ -25,14 +25,24 @@ const RootNavigator = ({ isAuth }) => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             {!isAuth ? (
                 // No token found, user isn't signed in
-                <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
-                    options={{
-                        title: 'Login',
-                        animationTypeForReplace: isAuth ? 'pop' : 'push',
-                    }}
-                />
+                <>
+                    <Stack.Screen
+                        name="Login"
+                        component={LoginScreen}
+                        options={{
+                            title: 'Login',
+                            animationTypeForReplace: isAuth ? 'pop' : 'push',
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Registration"
+                        component={RegistrationScreen}
+                        options={{
+                            title: 'Registration',
+                            animationTypeForReplace: isAuth ? 'pop' : 'push',
+                        }}
+                    />
+                </>
             ) : (
                 // User is signed in
                 <Stack.Screen name="ShiftList" component={ShiftListScreen} />

@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import { updateObject } from '../utility/utility';
 import * as actions from '../redux/actions';
 
-export default LoginScreen = () => {
+export default LoginScreen = ({ navigation }) => {
     const initialstate = {
         controls: {
             email: {
@@ -49,6 +49,11 @@ export default LoginScreen = () => {
         fetchAuth(data.controls.email.value, data.controls.password.value);
     }
 
+    // navigate to registration page
+    registrationHandler = () => {
+        navigation.navigate('Registration');
+    }
+
     // Pass either the loading status or sreen elements after loading data
     let content = <Text>Loading...</Text>;
     if (!loginState.loading) {
@@ -76,6 +81,9 @@ export default LoginScreen = () => {
                 <TouchableOpacity
                     onPress={() => { loginHandler() }}>
                     <Text>Click Here</Text></TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { registrationHandler() }}>
+                    <Text>Registration</Text></TouchableOpacity>
             </>
         );
     }
