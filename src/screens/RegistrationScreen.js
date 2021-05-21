@@ -114,7 +114,8 @@ export default RegistrationScreen = () => {
                 onChangeText={(val) => inputChangedHandler(val, 'password')}
             />
             <TouchableOpacity
-                onPress={() => { loginHandler() }}>
+                //onPress={() => { loginHandler() }}
+                >
                 <Text>Click Here</Text></TouchableOpacity>
         </View>
     );
